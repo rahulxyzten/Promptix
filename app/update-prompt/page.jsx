@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Form from "@components/Form";
 
 const EditPrompt = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const promptId = searchParams.get("id");
@@ -18,6 +18,12 @@ const EditPrompt = () => {
     description: "",
     tag: "",
   });
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
   useEffect(() => {
     const getPromptDetails = async () => {
@@ -32,11 +38,6 @@ const EditPrompt = () => {
 
     if (promptId) getPromptDetails();
   }, [promptId]);
-
-  if (!session) {
-    router.push("/login");
-    return;
-  }
 
   const updatePrompt = async (e) => {
     e.preventDefault();

@@ -7,11 +7,17 @@ import { useRouter } from "next/navigation";
 import Profile from "@components/Profile";
 
 const MyProfile = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   const [posts, setPosts] = useState([]);
   const [visibleCount, setVisibleCount] = useState(9);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/");
+    }
+  }, [status, router]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -22,11 +28,6 @@ const MyProfile = () => {
 
     if (session?.user.id) fetchPosts();
   }, []);
-
-  if (!session) {
-    router.push("/");
-    return;
-  }
 
   const handleEdit = async (post) => {
     router.push(`/update-prompt?id=${post._id}`);

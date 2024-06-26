@@ -8,7 +8,7 @@ import Form from "@components/Form";
 
 const CreatePrompt = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState({
@@ -17,10 +17,11 @@ const CreatePrompt = () => {
     tag: "",
   });
 
-  if (!session) {
-    router.push("/login");
-    return;
-  }
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
   const createPrompt = async (e) => {
     e.preventDefault();
