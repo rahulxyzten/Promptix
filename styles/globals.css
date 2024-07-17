@@ -123,7 +123,7 @@
 }
 
 .prompt_layout {
-  @apply w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-8;
+  @apply w-full grid sm:justify-items-center grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 py-8;
 }
 
 /* Form Component */

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { signOut, useSession, getProviders } from "next-auth/react";
+import { motion } from "framer-motion";
 
 const Nav = () => {
   const { data: session } = useSession();
@@ -36,6 +37,11 @@ const Nav = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const fadeInVariants = {
+    hidden: { opacity: 0, x: 100 },
+    visible: { opacity: 1, x: 0 },
+  };
 
   return (
     // <div className="sticky inset-x-0 top-0 z-20 w-full transition-all">
@@ -153,7 +159,13 @@ const Nav = () => {
                   onClick={() => setToggleDropdown((prev) => !prev)}
                 />
                 {toggleDropdown && (
-                  <div className="dropdown">
+                  <motion.div
+                    className="dropdown"
+                    initial="hidden"
+                    animate="visible"
+                    variants={fadeInVariants}
+                    transition={{ duration: 0.7 }}
+                  >
                     <Link
                       href="/profile"
                       className="dropdown_link"
@@ -175,11 +187,11 @@ const Nav = () => {
                         setToggleDropdown(false);
                         signOut();
                       }}
-                      className="mt-5 w-full black_btn"
+                      className=" mt-2 w-full black_btn"
                     >
                       Sign Out
                     </button>
-                  </div>
+                  </motion.div>
                 )}
               </div>
             ) : (

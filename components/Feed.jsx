@@ -1,18 +1,31 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
+import { motion } from "framer-motion";
 import PromptCard from "./PromptCard";
 
-const PromptCardList = ({ data, handleTagClick, visibleCount }) => {
+const PromptCardList = ({
+  data,
+  handleTagClick,
+  visibleCount,
+  cardVariants,
+}) => {
   return (
     <div className="mt-4 sm:mt-18 prompt_layout">
-      {data.slice(0, visibleCount).map((post) => (
-        <PromptCard
+      {data.slice(0, visibleCount).map((post, index) => (
+        <motion.div
           key={post._id}
-          post={post}
-          handleTagClick={handleTagClick}
-        />
+          custom={index}
+          initial="hidden"
+          animate="visible"
+          variants={cardVariants}
+        >
+          <PromptCard
+            key={post._id}
+            post={post}
+            handleTagClick={handleTagClick}
+          />
+        </motion.div>
       ))}
     </div>
   );
@@ -80,55 +93,91 @@ const Feed = () => {
     setSearchVisibleCount((prevCount) => prevCount + 6);
   };
 
-  return (
-    <section className="feed">
-      <form className="relative w-full flex-center">
-        <input
-          type="text"
-          placeholder="Search for a tag or a username"
-          value={searchText}
-          onChange={handleSearchChange}
-          required
-          className="search_input peer"
-        />
-      </form>
+  const titleVariants = {
+    hidden: { opacity: 0, y: -50 },
+    visible: { opacity: 1, y: 0 },
+  };
 
-      {/* All Prompts */}
-      {searchText ? (
-        <>
-          {" "}
-          <PromptCardList
-            data={searchedResults}
-            handleTagClick={handleTagClick}
-            visibleCount={searchVisibleCount}
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.2,
+      },
+    }),
+  };
+
+  return (
+    <>
+      <motion.h1
+        className="head_text text-center"
+        initial="hidden"
+        animate="visible"
+        variants={titleVariants}
+        transition={{ duration: 0.5 }}
+      >
+        Discover & Share
+        <br className="max-md:hidden" />
+        <span className="orange_gradient"> AI-Powered Prompts</span>
+      </motion.h1>
+      <p className="desc text-center">
+        Promptopia is an open-source AI prompting tool for modern world to
+        discover, create and share creative prompts
+      </p>
+
+      <section className="feed">
+        <form className="relative w-full flex-center">
+          <input
+            type="text"
+            placeholder="Search for a tag or a username"
+            value={searchText}
+            onChange={handleSearchChange}
+            required
+            className="search_input peer"
           />
-          {searchVisibleCount < searchedResults.length && (
-            <button
-              onClick={handleLoadMoreSearch}
-              className="mb-16 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors ease-out hover:text-black"
-            >
-              Load More
-            </button>
-          )}
-        </>
-      ) : (
-        <>
-          <PromptCardList
-            data={posts}
-            handleTagClick={handleTagClick}
-            visibleCount={postVisibleCount}
-          />
-          {postVisibleCount < posts.length && (
-            <button
-              onClick={handleLoadMorePost}
-              className="mb-16 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors ease-out hover:text-black"
-            >
-              Load More
-            </button>
-          )}
-        </>
-      )}
-    </section>
+        </form>
+
+        {/* All Prompts */}
+        {searchText ? (
+          <>
+            {" "}
+            <PromptCardList
+              data={searchedResults}
+              handleTagClick={handleTagClick}
+              visibleCount={searchVisibleCount}
+              cardVariants={cardVariants}
+            />
+            {searchVisibleCount < searchedResults.length && (
+              <button
+                onClick={handleLoadMoreSearch}
+                className="mb-16 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors ease-out hover:text-black"
+              >
+                Load More
+              </button>
+            )}
+          </>
+        ) : (
+          <>
+            <PromptCardList
+              data={posts}
+              handleTagClick={handleTagClick}
+              visibleCount={postVisibleCount}
+              cardVariants={cardVariants}
+            />
+            {postVisibleCount < posts.length && (
+              <button
+                onClick={handleLoadMorePost}
+                className="mb-16 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors ease-out hover:text-black"
+              >
+                Load More
+              </button>
+            )}
+          </>
+        )}
+      </section>
+    </>
   );
 };
 

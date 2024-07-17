@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import PromptCard from "./PromptCard";
 
 const Profile = ({
@@ -9,6 +10,17 @@ const Profile = ({
   visibleCount,
   handleLoadMore,
 }) => {
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: (i) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.2,
+      },
+    }),
+  };
+
   return (
     <section className="w-full px-1.5 mt-1 sm:mt-8">
       <h1 className="head_text text-left">
@@ -17,13 +29,21 @@ const Profile = ({
       <p className="desc text-left">{desc}</p>
 
       <div className="mt-4 sm:px-10 md:px-0 prompt_layout">
-        {data.slice(0, visibleCount).map((post) => (
-          <PromptCard
+        {data.slice(0, visibleCount).map((post, index) => (
+          <motion.div
             key={post._id}
-            post={post}
-            handleEdit={() => handleEdit && handleEdit(post)}
-            handleDelete={() => handleDelete && handleDelete(post)}
-          />
+            custom={index}
+            initial="hidden"
+            animate="visible"
+            variants={cardVariants}
+          >
+            <PromptCard
+              key={post._id}
+              post={post}
+              handleEdit={() => handleEdit && handleEdit(post)}
+              handleDelete={() => handleDelete && handleDelete(post)}
+            />
+          </motion.div>
         ))}
       </div>
       <div className="flex justify-center">

@@ -1,8 +1,13 @@
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
+  const titleVariants = {
+    hidden: { opacity: 0, y: 100 },
+    visible: { opacity: 1, y: 0 },
+  };
   return (
-    <section className="w-full max-w-full flex-start flex-col ml-8">
+    <section className="w-full max-w-full flex-start flex-col sm:ml-8">
       <h1 className="head_text text-left">
         <span className="blue_gradient">{type} Post</span>
       </h1>
@@ -11,9 +16,13 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
         imagination run wild with any AI-powered platform.
       </p>
 
-      <form
+      <motion.form
         onSubmit={handleSubmit}
         className="mt-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism"
+        initial="hidden"
+        animate="visible"
+        variants={titleVariants}
+        transition={{ duration: 0.5 }}
       >
         <label>
           <span className="font-satoshi font-semibold text-base text-gray-700">
@@ -71,7 +80,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             {submitting ? `{type}...` : type}
           </button>
         </div>
-      </form>
+      </motion.form>
     </section>
   );
 };
