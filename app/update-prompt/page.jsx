@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -75,4 +75,11 @@ const EditPrompt = () => {
   );
 };
 
-export default EditPrompt;
+const page = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditPrompt />
+    </Suspense>
+  );
+};
+export default page;
