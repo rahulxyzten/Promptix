@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
 import Profile from "@components/Profile";
 
 const MyProfile = () => {
@@ -11,7 +10,8 @@ const MyProfile = () => {
   const router = useRouter();
 
   const [posts, setPosts] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(9);
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -21,9 +21,11 @@ const MyProfile = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       const response = await fetch(`/api/users/${session?.user.id}/posts`);
       const data = await response.json();
       setPosts(data.reverse());
+      setLoading(false);
     };
 
     if (session?.user.id) fetchPosts();
@@ -66,6 +68,7 @@ const MyProfile = () => {
       handleDelete={handleDelete}
       visibleCount={visibleCount}
       handleLoadMore={handleLoadMore}
+      loading={loading}
     />
   );
 };

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Spinner } from "@nextui-org/react";
 import PromptCard from "./PromptCard";
 
 const PromptCardList = ({
@@ -35,6 +36,7 @@ const Feed = () => {
   const [posts, setPosts] = useState([]);
   const [postVisibleCount, setPostVisibleCount] = useState(9);
   const [searchVisibleCount, setSearchVisibleCount] = useState(9);
+  const [loading, setLoading] = useState(false);
 
   //Search states
   const [searchText, setSearchText] = useState("");
@@ -43,9 +45,11 @@ const Feed = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       const response = await fetch("/api/prompt");
       const data = await response.json();
       setPosts(data.reverse());
+      setLoading(false);
     };
 
     fetchPosts();
@@ -160,19 +164,27 @@ const Feed = () => {
           </>
         ) : (
           <>
-            <PromptCardList
-              data={posts}
-              handleTagClick={handleTagClick}
-              visibleCount={postVisibleCount}
-              cardVariants={cardVariants}
-            />
-            {postVisibleCount < posts.length && (
-              <button
-                onClick={handleLoadMorePost}
-                className="mb-16 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors ease-out hover:text-black"
-              >
-                Load More
-              </button>
+            {loading ? (
+              <div className="mt-28">
+                <Spinner label="Loading..." color="warning" />
+              </div>
+            ) : (
+              <>
+                <PromptCardList
+                  data={posts}
+                  handleTagClick={handleTagClick}
+                  visibleCount={postVisibleCount}
+                  cardVariants={cardVariants}
+                />
+                {postVisibleCount < posts.length && (
+                  <button
+                    onClick={handleLoadMorePost}
+                    className="mb-16 rounded-md px-3 py-2 text-sm font-medium text-gray-500 transition-colors ease-out hover:text-black"
+                  >
+                    Load More
+                  </button>
+                )}
+              </>
             )}
           </>
         )}

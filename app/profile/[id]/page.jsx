@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-
 import Profile from "@components/Profile";
 
 const UserProfile = ({ params }) => {
@@ -10,14 +9,16 @@ const UserProfile = ({ params }) => {
   const userName = searchParams.get("name");
 
   const [userPosts, setUserPosts] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(9);
+  const [visibleCount, setVisibleCount] = useState(6);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
+      setLoading(true);
       const response = await fetch(`/api/users/${params?.id}/posts`);
       const data = await response.json();
-
       setUserPosts(data.reverse());
+      setLoading(false);
     };
 
     if (params?.id) fetchPosts();
@@ -34,6 +35,7 @@ const UserProfile = ({ params }) => {
       data={userPosts}
       visibleCount={visibleCount}
       handleLoadMore={handleLoadMore}
+      loading={loading}
     />
   );
 };
