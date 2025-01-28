@@ -138,7 +138,7 @@ const PromptDetails = ({
             </Tooltip>
             <Tooltip color="default" content="gemini" className="capitalize">
               <Link target="_blank" href="https://gemini.google.com/app">
-                <Avatar src="https://wpwww-prod.s3.us-west-2.amazonaws.com/uploads/sites/42/2023/08/Google_Bard_logo-300x300.jpg" />
+                <Avatar src="https://img.40407.com/upload/202405/22/22083800ee60aUPZLQyKc6hlufj.webp" />
               </Link>
             </Tooltip>
           </AvatarGroup>

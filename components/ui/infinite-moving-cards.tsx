@@ -94,7 +94,7 @@ export const InfiniteMovingCards = ({
             <div className="flex items-center space-x-2 grayscale hover:grayscale-0">
               <Image
                 src={item.imgLink}
-                alt="Promptopia Logo"
+                alt="Promptix Logo"
                 width={30}
                 height={30}
               />

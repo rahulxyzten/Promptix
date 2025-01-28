@@ -68,14 +68,14 @@ const Register = () => {
               <Link href="/">
                 <Image
                   src="/assets/images/logo.svg"
-                  alt="Promptopia Logo"
+                  alt="Promptix Logo"
                   width={30}
                   height={30}
                   className="object-contain"
                 />
               </Link>
               <h3 className="text-xl font-semibold">
-                Create your promptopia.io account
+                Create your promptix.io account
               </h3>
               <p className="text-sm text-gray-500">
                 Get Started for free. No credit card required.
@@ -117,7 +117,7 @@ const Register = () => {
           <div className="ml-12 h-1/2 w-[150%] rounded-xl border border-gray-200 bg-white/90 p-4 shadow-xl">
             <Image
               src="/assets/images/geodata.webp"
-              alt="Promptopia Logo"
+              alt="getodata img"
               width={990}
               height={1735}
               className="blur-0 h-full rounded-xl border border-gray-200 object-cover shadow-md"

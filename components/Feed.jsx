@@ -127,7 +127,7 @@ const Feed = () => {
         <span className="orange_gradient"> AI-Powered Prompts</span>
       </motion.h1>
       <p className="desc text-center">
-        Promptopia is an open-source AI prompting tool for modern world to
+        Promptix is an open-source AI prompting tool for modern world to
         discover, create and share creative prompts
       </p>
 

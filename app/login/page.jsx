@@ -41,13 +41,13 @@ const Login = () => {
           <Link href="/">
             <Image
               src="/assets/images/logo.svg"
-              alt="Promptopia Logo"
+              alt="Promptix Logo"
               width={30}
               height={30}
               className="object-contain"
             />
           </Link>
-          <h3 className="text-xl font-semibold">Sign in to promptopia.io</h3>
+          <h3 className="text-xl font-semibold">Sign in to promptix.io</h3>
           <p className="text-sm text-gray-500">
             Start creating superpowers prompt
           </p>
