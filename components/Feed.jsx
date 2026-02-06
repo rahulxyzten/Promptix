@@ -48,21 +48,36 @@ const Feed = () => {
     const fetchPosts = async () => {
       setLoading(true);
       setError(null);
-      try {
-        const response = await fetch("/api/prompt");
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch posts");
+      const maxRetries = 3;
+      let attempt = 0;
+      let success = false;
+
+      while (attempt < maxRetries && !success) {
+        try {
+          const response = await fetch("/api/prompt");
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch posts");
+          }
+
+          const data = await response.json();
+          setPosts(data.reverse());
+          success = true;
+        } catch (error) {
+          attempt++;
+          console.error(`Attempt ${attempt} failed:`, error);
+          if (attempt === maxRetries) {
+            setError(
+              "Failed to fetch posts after multiple attempts. Please try again later."
+            );
+          } else {
+            await new Promise((resolve) => setTimeout(resolve, 500));
+          }
         }
-
-        const data = await response.json();
-        setPosts(data.reverse());
-      } catch (error) {
-        console.error("Error fetching posts:", error);
-        setError("Failed to fetch posts. Please try again later.");
-      } finally {
-        setLoading(false);
       }
+
+      setLoading(false);
     };
 
     fetchPosts();
