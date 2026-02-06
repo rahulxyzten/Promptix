@@ -37,6 +37,7 @@ const Feed = () => {
   const [postVisibleCount, setPostVisibleCount] = useState(9);
   const [searchVisibleCount, setSearchVisibleCount] = useState(9);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   //Search states
   const [searchText, setSearchText] = useState("");
@@ -46,10 +47,22 @@ const Feed = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
-      const response = await fetch("/api/prompt");
-      const data = await response.json();
-      setPosts(data.reverse());
-      setLoading(false);
+      setError(null);
+      try {
+        const response = await fetch("/api/prompt");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch posts");
+        }
+
+        const data = await response.json();
+        setPosts(data.reverse());
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        setError("Failed to fetch posts. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchPosts();
@@ -168,6 +181,8 @@ const Feed = () => {
               <div className="mt-28">
                 <Spinner label="Loading..." color="warning" />
               </div>
+            ) : error ? (
+              <div className="mt-16 text-center text-red-500">{error}</div>
             ) : (
               <>
                 <PromptCardList

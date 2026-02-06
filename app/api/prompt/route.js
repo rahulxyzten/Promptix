@@ -1,6 +1,9 @@
 import { connectToDB } from "@utils/database";
 import Prompt from "@models/prompt";
 
+export const dynamic = "force-dynamic";
+// This is used to force the server to revalidate the route on every request
+
 export const GET = async (request) => {
   const { searchParams } = new URL(request.url);
   try {
